@@ -1,0 +1,73 @@
+1. 
+After typing c to contiue past the breakpoint, we receive:
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00007ffff7e64676 in __GI_____strtol_l_internal (nptr=0x0, endptr=endptr@entry=0x0, base=base@entry=10, group=group@entry=0, 
+    loc=0x7ffff7fb9420 <_nl_global_locale>) at ../stdlib/strtol_l.c:283
+283     ../stdlib/strtol_l.c: No such file or directory.
+
+2.
+#3  0x0000000000401175 in main (argc=1, argv=0x7fffffffe5d8) at problem1.c:18
+18          printf("%d\n", loop_while(atoi(argv[1]), 16));
+
+We are in problem1.c, at line 18.
+
+3.
+No we cannot see the argument passed into atoi (nptr).
+
+4.
+The value printed is:
+
+(gdb) print argv[1]
+$1 = 0x0
+
+5.
+After running the program with a value of 5. gbd prints:
+
+-1835
+[Inferior 1 (process 26885) exited normally]
+
+6.
+The value of argc is 2. The elements of the argv array are {"/mnt/home/gcastro/courses/cs105/lab2/problem1", "5"}.
+The 0 element comes from the beginning address of the stack frame and the 1 element is left over value from when we ran problem 1 with the argv 5. 
+argc comes from the number of the elements in argv chracter array.
+
+7.
+We get to atoi.c. line 26:
+
+After we run "s" again, we get to problem1.c, line 6.
+
+8.
+We see line 1-10 in problem1.c. After hitting enter, we see line 11-20 in problem1.c.
+
+9.
+the return key repeat the last used command in gbd.
+
+10.
+Printing the values of result, a, and b; gives result = 10, a = 5, b = 16.
+
+11.
+After running problem1 with an arugement of 10, we end up at line 8. However, loop_while starts at line 4.
+
+12.
+The program does not stop and exits normally with a return value of -1580.
+
+13.
+The address of the instruction callq that calls atoi is 0x000000000040106f.
+The address of the instruction callq that calls printf is x0000000000401093.
+
+14.
+There is no call to loop_while, because between the two callq's the compiler uses optimization to 
+remove the function call to loop_while.
+
+15.
+print/x 42 returns 0x2a, and p 0x2f returns 47.
+
+16.
+The second lea command contains a small constant 0x10 = 256 in line 8.
+
+17.
+No answer is needed here.
+
+
+
